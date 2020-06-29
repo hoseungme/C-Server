@@ -8,34 +8,76 @@
 #include <unistd.h>
 
 #define PORT      8080
-#define FR_BUF_SZ 4096
+#define FR_BUF_SZ 65495
 #define BUF_SZ    65495
 
-char not_found_message[] =
-	"HTTP/1.1 404 NOT FOUND\r\n"
-	"Content-Type: text/html\r\n"
-	"\r\n";
+typedef struct _message
+{
+	char* res_ver;
+	uint status;
+	char* res_pharse;
+	char** options;
+	uint options_len;
+}message_data;
 
-char ok_message[] =
-	"HTTP/1.1 200 OK\r\n"
-	"Content-Type: text/html; charset=utf-8\r\n"
-	"\r\n";
+
+ulong message_builder(message_data message, char* return_message) {	
+	sprintf(return_message, "%s %d %s\r\n %s\r\n", \
+	message.res_ver, message.status, message.res_pharse, message.options[message.options_len-1]);		
+	
+	ulong message_len = strlen(return_message);
+	return message_len;
+}
 
 void router(int client_fd, const char* path)
 {
+	message_data m;
+	m.res_ver = "HTTP/1.1";
+	m.options = (char**)malloc(sizeof(char*)*5);
+	char* message = (char*)malloc(sizeof(char)*60);	
 	char res[FR_BUF_SZ] = {0, };
-	if (strcmp(path, "/main") == 0) {
-		memcpy(res, ok_message, sizeof(ok_message));
-		int fd = open("main.html", O_RDONLY);
-		/* overwrite last '\0' byte of string to concatnate strings */
-		read(fd, res + sizeof(ok_message) - 1, FR_BUF_SZ);
-	} else {
-		memcpy(res, not_found_message, sizeof(not_found_message));
-		int fd = open("notFound.html", O_RDONLY);
-		read(fd, res + sizeof(not_found_message) - 1, FR_BUF_SZ);
-	}
+	int fd = 0;
 
-	write(client_fd, res, strlen(res));
+	if (strcmp(path, "/main") == 0) {
+		m.status = 200;
+		m.res_pharse = "OK";
+		m.options[0] = "Content-Type: text/html; charset=utf-8\r\n";
+		m.options_len = 1;
+		
+		ulong len = message_builder(m, message);
+		memcpy(res, message, len);		
+		
+		fd = open("main.html", O_RDONLY);		
+		read(fd, res + strlen(message), FR_BUF_SZ);
+	} else if (strcmp(path, "/favicon.ico") == 0) {
+		m.status = 200;
+		m.res_pharse = "OK";
+		m.options[0] = "Content-Type: image/x-icon\r\n";
+		m.options_len = 1;
+		
+		ulong len = message_builder(m, message);
+		memcpy(res, message, len);
+		
+		fd = open("favicon.ico", O_RDONLY);
+		off_t fsize = lseek(fd, 0, SEEK_END);
+		lseek(fd, 0, SEEK_SET);
+		read(fd, res + strlen(message), fsize);
+	} else {
+		m.status = 404;
+		m.res_pharse = "NOT FOUND";
+		m.options[0] = "Content-Type: text/html; charset=utf-8\r\n";
+		m.options_len = 1;
+
+		ulong len = message_builder(m, message);
+		memcpy(res, message, strlen(message));
+	
+		fd = open("notFound.html", O_RDONLY);
+		read(fd, res + strlen(message), FR_BUF_SZ);
+	}
+	write(client_fd, res, sizeof(res));
+
+	free(m.options);
+	free(message);
 }
 
 int main(int argc, char const *argv[])
