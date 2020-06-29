@@ -8,49 +8,46 @@
 
   <style>
     #name_wraper {
-      width: 100%;
       text-align: center;
       animation-name: ex;
-      animation-duration: 3s;
+      animation-duration: 4s;
       animation-iteration-count: infinite;
       animation-direction: reverse;
-      position: fixed;
-      top: 20%;
+      position: fixed;      
+      transform: translate(25vw, 25VH);
+      transition: transform .4s;
+      width: 469px;
+      height: 232px;
+      z-index: 19999;
     }
 
     #name {
-      font-weight: bolder;
-      animation: rotate_name 6s ease-in-out infinite;
+      animation: rotate_name 7s ease-in-out infinite;
     }
 
+
     .name {
+      top: 0;
       position: absolute;
-      width: 50%;
-      top: 20%;
-      left: 25%;
-      font-size: 10vw;
-      transform-origin: center;
+      font-size: 100px;      
+      left: 0;
     }
 
     #trail1 {
       opacity: 0.7;
-      animation: rotate_name 6s ease-in-out 60ms infinite;
+      animation: rotate_name 7s ease-in-out 60ms infinite;
     }
 
     #trail2 {
-      opacity: 0.6;
-      animation: rotate_name 6s ease-in-out 160ms infinite;
+      opacity: 0.5;
+      animation: rotate_name 7s ease-in-out 160ms infinite;
     }
 
     #trail3 {
-      opacity: 0.5;
-      animation: rotate_name 6s ease-in-out 260ms infinite;
+      opacity: 0.33;
+      animation: rotate_name 7s ease-in-out 260ms infinite;
     }
 
-    #trail4 {
-      opacity: 0.4;
-      animation: rotate_name 6s ease-in-out 360ms infinite;
-    }
 
     @keyframes rotate_name {
       0% {
@@ -80,11 +77,12 @@
       }
 
       75% {
-        color: lightskyblue;
+        color: green;
       }
 
       100% {
         color: red;
+
       }
     }
   </style>
@@ -95,20 +93,21 @@
     <p id="name" class="name">404<br> NOT FOUND</p>
     <p id="trail1" class="name">404<br> NOT FOUND</p>
     <p id="trail2" class="name">404<br> NOT FOUND</p>
-    <p id="trail3" class="name">404<br> NOT FOUND</p>
-    <p id="trail4" class="name">404<br> NOT FOUND</p>
-    <p id="trail1" class="name">404<br> NOT FOUND</p>
-    <p id="trail2" class="name">404<br> NOT FOUND</p>
-    <p id="trail3" class="name">404<br> NOT FOUND</p>
-    <p id="trail4" class="name">404<br> NOT FOUND</p>
+    <p id="trail3" class="name">404<br> NOT FOUND</p>        
   </div>
   <div>
     <script src="https://gist.github.com/kimsos0723/931f5afc75d96cd11a13e3c5567e325a.js"></script>
   </div>
+  <script>
+    let wr = document.querySelector("#name_wraper")
+    wr.addEventListener('mouseover', () => {
+      let randomX = Math.floor(Math.random() * (innerWidth - 469)) + "px"
+      let randomY = Math.floor(Math.random() * (innerHeight - 220)) + "px"
+      wr.style.transform = `translate(${randomX}, ${randomY})`
+    })
 
 
-
-
+  </script>
 </body>
 
 </html>
