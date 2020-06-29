@@ -1,0 +1,110 @@
+<html lang="kr">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>호승찡</title>
+
+
+  <style>
+    #name_wraper {
+      width: 100%;
+      text-align: center;
+      animation-name: ex;
+      animation-duration: 3s;
+      animation-iteration-count: infinite;
+      animation-direction: reverse;
+    }
+
+    #name {
+      font-weight: bolder;
+      animation: rotate_name 6s ease-in-out infinite;
+    }
+
+    .name {
+      position: absolute;
+      width: 50%;
+      top: 20%;
+      left: 25%;
+      font-size: 15vw;
+      transform-origin: center;
+    }
+
+    #trail1 {
+      opacity: 0.7;
+      animation: rotate_name 6s ease-in-out 60ms infinite;
+    }
+
+    #trail2 {
+      opacity: 0.6;
+      animation: rotate_name 6s ease-in-out 160ms infinite;
+    }
+
+    #trail3 {
+      opacity: 0.5;
+      animation: rotate_name 6s ease-in-out 260ms infinite;
+    }
+
+    #trail4 {
+      opacity: 0.4;
+      animation: rotate_name 6s ease-in-out 360ms infinite;
+    }
+
+    @keyframes rotate_name {
+      0% {
+        transform: rotateX(0deg);
+      }
+
+      25% {
+        transform: rotateX(180deg) rotateZ(0deg);
+      }
+
+      50% {
+        transform: rotateZ(180deg);
+      }
+    }
+
+    @keyframes ex {
+      0% {
+        color: red;
+      }
+
+      25% {
+        color: yellow;
+      }
+
+      50% {
+        color: blue;
+      }
+
+      75% {
+        color: lightskyblue;
+      }
+
+      100% {
+        color: red;
+      }
+    }
+  </style>
+</head>
+
+<body style="background-color: black;">
+  <div id="name_wraper">
+    <p id="name" class="name">장호승</p>
+    <p id="trail1" class="name">장호승</p>
+    <p id="trail2" class="name">장호승</p>
+    <p id="trail3" class="name">장호승</p>
+    <p id="trail4" class="name">장호승</p>
+    <p id="trail1" class="name">장호승</p>
+    <p id="trail2" class="name">장호승</p>
+    <p id="trail3" class="name">장호승</p>
+    <p id="trail4" class="name">장호승</p>
+  </div>
+
+
+
+
+
+</body>
+
+</html>
