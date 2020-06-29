@@ -14,8 +14,7 @@
 char not_found_message[] =
 	"HTTP/1.1 404 NOT FOUND\r\n"
 	"Content-Type: text/html\r\n"
-	"\r\n"
-	"not found";
+	"\r\n";
 
 char ok_message[] =
 	"HTTP/1.1 200 OK\r\n"
@@ -32,6 +31,8 @@ void router(int client_fd, const char* path)
 		read(fd, res + sizeof(ok_message) - 1, FR_BUF_SZ);
 	} else {
 		memcpy(res, not_found_message, sizeof(not_found_message));
+		int fd = open("notFound.html", O_RDONLY);
+		read(fd, res + sizeof(not_found_message) - 1, FR_BUF_SZ);
 	}
 
 	write(client_fd, res, strlen(res));
